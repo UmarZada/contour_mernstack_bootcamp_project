@@ -1,42 +1,27 @@
-import React, { useState, useRef } from 'react';
-import Child from './child';
-import ResultContext from './ResultContext';
+import { createContext, useState } from "react";
+import Child from "./child";
+export const sign= createContext();
+const Parent=()=>{
+  const [sum ,setSum] = useState('');
+  const [sub ,setSub] = useState('');
+  const [div ,setDiv] = useState('');
 
-const Parent = () => {
-  const [additionResult, setAdditionResult] = useState('');
-  const [subtractionResult, setSubtractionResult] = useState('');
-  const [divisionResult, setDivisionResult] = useState('');
+  const value = {setSum,setSub,setDiv};
+
+return(
   
-  const resultRef = useRef({ addition: null, subtraction: null, division: null });
+  <div>
+    <p>this is result of addition:{sum}</p>
+    <p>this is result of subtraction:{sub}</p>
+    <p>this is result of division:{div}</p>
+    <sign.Provider value={value}>
+    <Child sign='+'/>
+    <Child sign='-'/>
+    <Child sign='/'/>
+  </sign.Provider>
+    
+  </div>
 
-
-  const handleOperation = (operation, result) => {
-    if (operation === 'addition') {
-      setAdditionResult(result);
-    } else if (operation === 'subtraction') {
-      setSubtractionResult(result);
-    } else if (operation === 'division') {
-      setDivisionResult(result);
-    }
-    resultRef.current[operation] = result;
-  };
-
-  return (
-    <div>
-      <h1>Parent Component</h1>
-      
-      <div>
-        <p>The result of addition is: {additionResult}</p>
-        <p>The result of subtraction is: {subtractionResult}</p>
-        <p>The result of division is: {divisionResult}</p>
-      </div>
-      <ResultContext.Provider value={resultRef}>
-        <Child operation="addition" handleOperation={handleOperation} />
-        <Child operation="subtraction" handleOperation={handleOperation} />
-        <Child operation="division" handleOperation={handleOperation} />
-      </ResultContext.Provider>
-    </div>
-  );
-};
-
+)
+}
 export default Parent;

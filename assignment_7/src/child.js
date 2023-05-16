@@ -1,45 +1,43 @@
-import React, { useState, useContext } from 'react';
-import  ResultContext  from './ResultContext';
+import { useContext, useRef } from "react";
+import { sign } from "./parentcomponent";
+import React from "react";
+ function Child(props){
+  const getRef = useContext(sign)
+  const num1= useRef(0);
+  const num2= useRef(0);
 
-const Child = ({ operation, handleOperation }) => {
-  const [number1, setNumber1] = useState('');
-  const [number2, setNumber2] = useState('');
-  const resultRef = useContext(ResultContext);
-
-  const performOperation = () => {
-    let result;
-    if (operation === 'addition') {
-      result = parseInt(number1) + parseInt(number2);
-    } else if (operation === 'subtraction') {
-      result = parseInt(number1) - parseInt(number2);
-    } else if (operation === 'division') {
-      result = parseInt(number1) / parseInt(number2);
+  function calCulate(){
+    if(props.sign==='+'){
+      const result1 = parseInt(num1.current.value);
+      const result2 = parseInt(num2.current.value);
+      const sum = result1+result2;
+      getRef.setSum(sum);
     }
-    handleOperation(operation, result);
-    setNumber1('');
-    setNumber2('');
-  };
-  
+    else if(props.sign==='-'){
+      const result1 = parseInt(num1.current.value);
+      const result2 = parseInt(num2.current.value);
+      const sub = result1-result2;
+      getRef.setSub(sub);
+    }
+    else{
+      const result1 = parseInt(num1.current.value);
+      const result2 = parseInt(num2.current.value);
+      const div = result1/result2;
+      getRef.setDiv(div);
 
-  return (
+    }
+    
+  }
+  return(
+    <>
     <div>
       
-      <div>
-        <input
-          type="input"
-          value={number1}
-          onChange={(e) => setNumber1(e.target.value)}
-        />
-        <input
-          type="input"
-          value={number2}
-          onChange={(e) => setNumber2(e.target.value)}
-        />
-        <button onClick={performOperation}>{operation}</button>
-</div>
-
-</div>
-);
-};
-
-export default Child;
+      <input type="input" ref={num1} />
+      
+      <input type="input" ref={num2} />
+    <button onClick={calCulate} >calculate</button>
+    </div>
+  </>
+  )
+ }
+ export default Child;
